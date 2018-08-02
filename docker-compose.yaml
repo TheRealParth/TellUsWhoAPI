@@ -1,0 +1,20 @@
+version: '2'
+services:
+#  web:
+#    build: .
+#    links:
+#    - redis
+#    - rethink
+#    ports:
+#    - "80:8080"
+#    volumes:
+#    - ./:/usr/src
+  redis:
+    image: redis
+    ports:
+    - "6379:6379"
+  rethink:
+    image: rethinkdb
+    ports:
+    - "28015:28015"
+    - "8081:8080"

@@ -1,0 +1,2317 @@
+FORMAT: 1A
+HOST: http://resources.coo-e.com:8080/
+
+# Coordinator
+This api is the backend api responsible for the whole Coo-e coordinator app.
+
+## Login [/auth/login]
+This is the auth endpoint for login, you must log in before making any other requests,
+otherwise the response will return a 404 or a 203 with no actual data
+### Login User [POST]
+
++ Request (application/json)
+
+        {
+            "username": "deeperthanyou",
+            "password": "password",
+            "pushToken": "{token}"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "status": true,
+            "message": "Signed in succesfully!",
+            "user": {
+                "createdAt": "2017-01-01T05:38:44.792Z",
+                "email": {
+                    "createdAt": "2017-01-01T05:38:44.832Z",
+                    "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                    "id": "deep7176@gmail.com",
+                    "isValidated": false,
+                    "userId": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                    "validationCode": 7284881965043779
+                },
+                "firstName": "Deep",
+                "id": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                "lastName": "Patel",
+                "privacy": {
+                    "Bio": 0,
+                    "Dob": 0,
+                    "campusOrganizations": 0,
+                    "gender": 0,
+                    "hometown": 0,
+                    "majors": 0,
+                    "nationality": 0,
+                    "nativeLanguage": 0,
+                    "school": 0,
+                    "studentType": 0
+                },
+                "profile": {},
+                "settings": {
+                    "loginMethod": 0,
+                    "notifications": true
+                },
+                "username": "deeperthanyou"
+                "profilePicPath": "/api/image/file/a47537c7-958c-424c-81bb-d1d0612c0f9e/profilePic.jpeg"
+            }
+        }
+
+## Logout [/auth/logout]
+This is the auth endpoint to logout the user and remove the firebase token
+from the user so they don't get notifications anymore
+### Logout User [POST]
+
++ Request (application/json)
+
+        {
+            "pushToken": "{token}"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "status": 200,
+            "message": "User logged out successfully"
+        }
+
+## Signup [/auth/signup]
+This endoint signs up the user. If the email or username is already taken then the signup
+is unsucessful and an error message is returned
+### Signup User [POST]
+
++ Request (application/json)
+
+        {
+            "username": "deeperthanyou",
+            "password": "password",
+            "email":"deep7176@gmail.com",
+            "phone": 1234567890
+            "firstName": "Deep",
+            "lastName": "Patel"
+        }
+
++ Response 201 (application/json)
+
+        {
+            "status": true,
+            "message": "Signup successful!",
+            "user": {
+                "createdAt": "2016-12-28T22:57:05.090Z",
+                "email": {
+                    "createdAt": "2016-12-28T22:57:05.202Z",
+                    "createdBy": "3e785502-f098-4a41-b573-6daef9292e45",
+                    "id": "deep7176@gmail.com",
+                    "isValidated": false,
+                    "userId": "3e785502-f098-4a41-b573-6daef9292e45",
+                    "validationCode": 1595948580652475
+                },
+                "firstName": "Deep",
+                "id": "3e785502-f098-4a41-b573-6daef9292e45",
+                "lastName": "Patel",
+                "username": "deeperthanyou",
+                "profile": {},
+                "privacy": {
+                    "Bio": 0,
+                    "Dob": 0,
+                    "campusOrganizations": 0,
+                    "gender": 0,
+                    "hometown": 0,
+                    "majors": 0,
+                    "nationality": 0,
+                    "nativeLanguage": 0,
+                    "school": 0,
+                    "studentType": 0
+                },
+                "settings": {
+                    "loginMethod": 0,
+                    "notifications": true
+                },
+            }
+        }
+
++ Response 202 (application/json)
+
+        {
+            "status": 202,
+            "message": "User Already Exists"
+        }
+
++ Response 202 (application/json)
+
+        {
+            "status": 202,
+            "message": "User with that email Already Exists."
+        }
+
+## Forgot Password [/auth/resetPassword/byEmail/{email}]
+Lets you reset your password via your email
+### Send forgot password email [GET]
++ Request (application/json)
+
+        + Parameters
+            + teeup_id (numbers and letters) - ID of the teeup
+
++ Response 200 (application/json)
+
+        {
+          "status": 200,
+          "message": "Sent successfully",
+          "info": {
+            "accepted": [
+              "asp225@njit.edu"
+            ],
+            "rejected": [],
+            "response": "250 2.0.0 OK 1486686662 v187sm10672341qkd.20 - gsmtp",
+            "envelope": {
+              "from": "donotreply@cooe.com",
+              "to": [
+                "asp225@njit.edu"
+              ]
+            },
+            "messageId": "fdf37afe-50c6-1d42-5feb-31c428870d35@cooe.com"
+          }
+        }
+
+## Set new password [/auth/setNewPassword/{email}/{reset_code}]
+Use the code provided at the end of the reset link in email after reset email
+This is a temporary solution to do it through postman, evetually
+apps will be able to recognize this link either via deep linking in the actual app
+or the link will be swapped with a link to the front end web where the user will
+enter the new password and it will be posted to the link for them.
+### Send the new pass [POST]
++ Request (application/json)
+
+        + Parameters
+            + email - The email of the user who is resetting their password
+            + reset_code - This code is provided at the end of the link in the email
+
+        {
+            "password" : "NEWPASSWORD"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "status": 200,
+            "message": "Success",
+        }
+
+## Teeups [/api/teeups]
+Lets you create a teeup or get a collection of Coordinating Teeups which
+you are participating in.
+### Get coordinating Teeups [GET]
+
++ Request (application/json)
+
+        //nothing
+
++ Response 200 (application/json)
+
+        {
+            "status": 200,
+            "message": "Successfully retrieved teeups",
+            "teeups": [
+                {
+                    "createdAt": "2017-01-03T03:46:52.231Z",
+                    "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                    "creator": {
+                        "createdAt": "2017-01-01T05:38:44.792Z",
+                        "firstName": "Deep",
+                        "id": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                        "lastName": "Patel",
+                        "username": "deeperthanyou",
+                        "profile": {},
+                        "privacy": {
+                            "Bio": 0,
+                            "Dob": 0,
+                            "gender": 0,
+                            "nationality": 0,
+                            "nativeLanguage": 0,
+                            "hometown": 0,
+                            "school": 0,
+                            "studentType": 0,
+                            "majors": 0,
+                            "campusOrganizations": 0
+                        },
+                        "settings": {
+                            "notifications": true,
+                            "loginMethod": 0
+                        }
+                    },
+                    "gamePlanWhen": {
+                        "createdAt": "2017-01-03T07:14:24.244Z",
+                        "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                        "fromDate": "2016-12-29T08:43:52.000Z",
+                        "id": "32aee301-cd33-4b18-8356-952c7d242ee6",
+                        "teeupId": "1b546bc4-1981-4b05-afab-fbced8922cd6",
+                        "thumbsDown": ["a47537c7-958c-424c-81bb-d1d0612c0f9e"],
+                        "thumbsUp": [],
+                        "toDate": "2016-12-29T09:34:07.000Z",
+                        "thumbsUpCount": 0,
+                        "thumbsDownCount": 1
+                    },
+                    "gamePlanWhenId": "32aee301-cd33-4b18-8356-952c7d242ee6",
+                    "id": "1b546bc4-1981-4b05-afab-fbced8922cd6",
+                    "message": "Message",
+                    "participants": [
+                        {
+                            "id": "cdbb52d1-a31b-443e-b34d-c49b70ed5aa8",
+                            "inviteDate": "2017-01-03T03:46:52.266Z",
+                            "role": 0,
+                            "status": 3,
+                            "teeupId": "1b546bc4-1981-4b05-afab-fbced8922cd6",
+                            "userId": "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+                        }
+                    ],
+                    "settings": {
+                        "decideGamePlan": false,
+                        "invite": true,
+                        "isPublic": false,
+                        "join": false,
+                        "modifyRow": false,
+                        "suggest": true
+                    },
+                    "status": 1,
+                    "title": "Title"
+                },
+                {
+                    "createdAt": "2017-01-04T06:01:53.481Z",
+                    "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                    "creator": {
+                        "createdAt": "2017-01-01T05:38:44.792Z",
+                        "firstName": "Deep",
+                        "id": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                        "lastName": "Patel",
+                        "username": "deeperthanyou",
+                        "profile": {},
+                        "privacy": {
+                            "Bio": 0,
+                            "Dob": 0,
+                            "gender": 0,
+                            "nationality": 0,
+                            "nativeLanguage": 0,
+                            "hometown": 0,
+                            "school": 0,
+                            "studentType": 0,
+                            "majors": 0,
+                            "campusOrganizations": 0
+                        },
+                        "settings": {
+                            "notifications": true,
+                            "loginMethod": 0
+                        }
+                    },
+                    "id": "bacdcf62-0cb9-40ba-acda-581605c943f2",
+                    "message": "21 sav",
+                    "participants": [
+                        {
+                            "id": "5172e469-3a15-4838-a8de-337f9ac6fda4",
+                            "inviteDate": "2017-01-04T06:01:53.490Z",
+                            "role": 0,
+                            "status": 3,
+                            "teeupId": "bacdcf62-0cb9-40ba-acda-581605c943f2",
+                            "userId": "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+                        }
+                    ],
+                    "settings": {
+                        "decideGamePlan": false,
+                        "invite": true,
+                        "isPublic": false,
+                        "join": false,
+                        "modifyRow": false,
+                        "suggest": true
+                    },
+                    "status": 0,
+                    "title": "I made this shit on my phone"
+                }
+            ],
+            next: "PROVIDES A LINK TO THE NEXT 10 TEEUPS OR FALSE IF THERE ARE NO MORE"
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+### Create a teeup [POST]
+
++ Request (application/json)
+
+        {
+            "title": "Title of the teeup",
+            "message": "Message of the teeup",
+            "when" : {
+                "whenTo": "Epoch time",
+                "whenFrom": "Epoch time",
+                "dateText": "Tomorrow",
+                "timeText": "Afternoon"
+            },
+            "where" : {
+                "googlePlacesId":  "Obtained from google places API",
+                "lat" : "Latitude",
+                "lon" : "Longitude",
+                "street" : "street address",
+                "city" : "city address",
+                "state" : "state address",
+                "zip" : "street address",
+
+            },
+            "inviteEmails": "an array of emails to invite",
+            "invitePhones": "an array of phone numbers to invite"
+        }
+
++ Response 201 (application/json)
+
+        {
+            "status": true,
+            "message": "Teeup created successfully",
+            "teeup": {
+                "title": "Title",
+                "message": "Message",
+                "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                "id": "f003bfba-acf7-4c60-a99a-c476dce0a124",
+                "status": 0,
+                "settings": {
+                    "decideGamePlan": false,
+                    "invite": true,
+                    "isPublic": false,
+                    "join": false,
+                    "modifyRow": false,
+                    "suggest": true
+                },
+                "createdAt": "2017-01-04T09:14:53.955Z"
+            }
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
+## Teeup Invites [/api/teeups/invites]
+Get a collection of teeups to which you've been invited
+### Get invites to Teeups [GET]
+
++ Request (application/json)
+
+        //nothing
+
++ Response 200 (application/json)
+
+        {
+            "status": 200,
+            "message": "Successfully retrieved teeups",
+            "teeups": [
+                {
+                    "createdAt": "2017-01-03T03:46:52.231Z",
+                    "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                    "creator": {
+                        "createdAt": "2017-01-01T05:38:44.792Z",
+                        "firstName": "Deep",
+                        "id": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                        "lastName": "Patel",
+                        "username": "deeperthanyou",
+                        "profile": {},
+                        "privacy": {
+                            "Bio": 0,
+                            "Dob": 0,
+                            "gender": 0,
+                            "nationality": 0,
+                            "nativeLanguage": 0,
+                            "hometown": 0,
+                            "school": 0,
+                            "studentType": 0,
+                            "majors": 0,
+                            "campusOrganizations": 0
+                        },
+                        "settings": {
+                            "notifications": true,
+                            "loginMethod": 0
+                        }
+                    },
+                    "gamePlanWhen": {
+                        "createdAt": "2017-01-03T07:14:24.244Z",
+                        "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                        "fromDate": "2016-12-29T08:43:52.000Z",
+                        "id": "32aee301-cd33-4b18-8356-952c7d242ee6",
+                        "teeupId": "1b546bc4-1981-4b05-afab-fbced8922cd6",
+                        "thumbsDown": ["a47537c7-958c-424c-81bb-d1d0612c0f9e"],
+                        "thumbsUp": [],
+                        "toDate": "2016-12-29T09:34:07.000Z",
+                        "thumbsUpCount": 0,
+                        "thumbsDownCount": 1
+                    },
+                    "gamePlanWhenId": "32aee301-cd33-4b18-8356-952c7d242ee6",
+                    "id": "1b546bc4-1981-4b05-afab-fbced8922cd6",
+                    "message": "Message",
+                    "participants": [
+                        {
+                            "id": "cdbb52d1-a31b-443e-b34d-c49b70ed5aa8",
+                            "inviteDate": "2017-01-03T03:46:52.266Z",
+                            "role": 0,
+                            "status": 3,
+                            "teeupId": "1b546bc4-1981-4b05-afab-fbced8922cd6",
+                            "userId": "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+                        }
+                    ],
+                    "settings": {
+                        "decideGamePlan": false,
+                        "invite": true,
+                        "isPublic": false,
+                        "join": false,
+                        "modifyRow": false,
+                        "suggest": true
+                    },
+                    "status": 1,
+                    "title": "Title"
+                },
+                {
+                    "createdAt": "2017-01-04T06:01:53.481Z",
+                    "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                    "creator": {
+                        "createdAt": "2017-01-01T05:38:44.792Z",
+                        "firstName": "Deep",
+                        "id": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                        "lastName": "Patel",
+                        "username": "deeperthanyou",
+                        "profile": {},
+                        "privacy": {
+                            "Bio": 0,
+                            "Dob": 0,
+                            "gender": 0,
+                            "nationality": 0,
+                            "nativeLanguage": 0,
+                            "hometown": 0,
+                            "school": 0,
+                            "studentType": 0,
+                            "majors": 0,
+                            "campusOrganizations": 0
+                        },
+                        "settings": {
+                            "notifications": true,
+                            "loginMethod": 0
+                        }
+                    },
+                    "id": "bacdcf62-0cb9-40ba-acda-581605c943f2",
+                    "message": "21 sav",
+                    "participants": [
+                        {
+                            "id": "5172e469-3a15-4838-a8de-337f9ac6fda4",
+                            "inviteDate": "2017-01-04T06:01:53.490Z",
+                            "role": 0,
+                            "status": 3,
+                            "teeupId": "bacdcf62-0cb9-40ba-acda-581605c943f2",
+                            "userId": "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+                        }
+                    ],
+                    "settings": {
+                        "decideGamePlan": false,
+                        "invite": true,
+                        "isPublic": false,
+                        "join": false,
+                        "modifyRow": false,
+                        "suggest": true
+                    },
+                    "status": 0,
+                    "title": "I made this shit on my phone"
+                }
+            ],
+            next: "PROVIDES A LINK TO THE NEXT 10 TEEUPS OR FALSE IF THERE ARE NO MORE"
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
+## Past Teeups [/api/teeups/past]
+Get a collection of teeups which have already happened or are cancelled
+### Get past teeups [GET]
+
++ Request (application/json)
+
+        //nothing
+
++ Response 200 (application/json)
+
+        {
+            "status": 200,
+            "message": "Successfully retrieved teeups",
+            "teeups": [
+                {
+                    "createdAt": "2017-01-03T03:46:52.231Z",
+                    "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                    "creator": {
+                        "createdAt": "2017-01-01T05:38:44.792Z",
+                        "firstName": "Deep",
+                        "id": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                        "lastName": "Patel",
+                        "username": "deeperthanyou",
+                        "profile": {},
+                        "privacy": {
+                            "Bio": 0,
+                            "Dob": 0,
+                            "gender": 0,
+                            "nationality": 0,
+                            "nativeLanguage": 0,
+                            "hometown": 0,
+                            "school": 0,
+                            "studentType": 0,
+                            "majors": 0,
+                            "campusOrganizations": 0
+                        },
+                        "settings": {
+                            "notifications": true,
+                            "loginMethod": 0
+                        }
+                    },
+                    "gamePlanWhen": {
+                        "createdAt": "2017-01-03T07:14:24.244Z",
+                        "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                        "fromDate": "2016-12-29T08:43:52.000Z",
+                        "id": "32aee301-cd33-4b18-8356-952c7d242ee6",
+                        "teeupId": "1b546bc4-1981-4b05-afab-fbced8922cd6",
+                        "thumbsDown": ["a47537c7-958c-424c-81bb-d1d0612c0f9e"],
+                        "thumbsUp": [],
+                        "toDate": "2016-12-29T09:34:07.000Z",
+                        "thumbsUpCount": 0,
+                        "thumbsDownCount": 1
+                    },
+                    "gamePlanWhenId": "32aee301-cd33-4b18-8356-952c7d242ee6",
+                    "id": "1b546bc4-1981-4b05-afab-fbced8922cd6",
+                    "message": "Message",
+                    "participants": [
+                        {
+                            "id": "cdbb52d1-a31b-443e-b34d-c49b70ed5aa8",
+                            "inviteDate": "2017-01-03T03:46:52.266Z",
+                            "role": 0,
+                            "status": 3,
+                            "teeupId": "1b546bc4-1981-4b05-afab-fbced8922cd6",
+                            "userId": "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+                        }
+                    ],
+                    "settings": {
+                        "decideGamePlan": false,
+                        "invite": true,
+                        "isPublic": false,
+                        "join": false,
+                        "modifyRow": false,
+                        "suggest": true
+                    },
+                    "status": 1,
+                    "title": "Title"
+                },
+                {
+                    "createdAt": "2017-01-04T06:01:53.481Z",
+                    "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                    "creator": {
+                        "createdAt": "2017-01-01T05:38:44.792Z",
+                        "firstName": "Deep",
+                        "id": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                        "lastName": "Patel",
+                        "username": "deeperthanyou",
+                        "profile": {},
+                        "privacy": {
+                            "Bio": 0,
+                            "Dob": 0,
+                            "gender": 0,
+                            "nationality": 0,
+                            "nativeLanguage": 0,
+                            "hometown": 0,
+                            "school": 0,
+                            "studentType": 0,
+                            "majors": 0,
+                            "campusOrganizations": 0
+                        },
+                        "settings": {
+                            "notifications": true,
+                            "loginMethod": 0
+                        }
+                    },
+                    "id": "bacdcf62-0cb9-40ba-acda-581605c943f2",
+                    "message": "21 sav",
+                    "participants": [
+                        {
+                            "id": "5172e469-3a15-4838-a8de-337f9ac6fda4",
+                            "inviteDate": "2017-01-04T06:01:53.490Z",
+                            "role": 0,
+                            "status": 3,
+                            "teeupId": "bacdcf62-0cb9-40ba-acda-581605c943f2",
+                            "userId": "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+                        }
+                    ],
+                    "settings": {
+                        "decideGamePlan": false,
+                        "invite": true,
+                        "isPublic": false,
+                        "join": false,
+                        "modifyRow": false,
+                        "suggest": true
+                    },
+                    "status": 0,
+                    "title": "I made this shit on my phone"
+                }
+            ],
+            next: "PROVIDES A LINK TO THE NEXT 10 TEEUPS OR FALSE IF THERE ARE NO MORE"
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
+
+## Specific Teeup [/api/teeups/{teeup_uid}]
+These routes let the user interact with a specific teeup.
+### Get Teeup [GET]
+This gets a teeup, or returns an error if the teeup is not found
+
++ Request (application/json)
+
+        + Parameters
+            + teeup_id (numbers and letters) - ID of the teeup
+
++ Response 200 (application/json)
+
+        {
+            "status": 200,
+            "teeup": {
+                "createdAt": "2017-01-04T09:14:53.955Z",
+            "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+            "id": "f003bfba-acf7-4c60-a99a-c476dce0a124",
+            "message": "Message",
+            "participants": [
+              {
+                "id": "effc6830-62b0-4028-9051-8b3bc3e2d906",
+                "inviteDate": "2017-01-04T09:14:53.987Z",
+                "role": 0,
+                "status": 3,
+                "teeupId": "f003bfba-acf7-4c60-a99a-c476dce0a124",
+                "userId": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                "userInfo": {
+                  "createdAt": "2017-01-01T05:38:44.792Z",
+                  "firstName": "Deep",
+                  "id": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                  "lastName": "Patel",
+                  "username": "deeperthanyou",
+                  "profile": {},
+                  "privacy": {
+                    "Bio": 0,
+                    "Dob": 0,
+                    "gender": 0,
+                    "nationality": 0,
+                    "nativeLanguage": 0,
+                    "hometown": 0,
+                    "school": 0,
+                    "studentType": 0,
+                    "majors": 0,
+                    "campusOrganizations": 0
+                  },
+                  "settings": {
+                    "notifications": true,
+                    "loginMethod": 0
+                  }
+                }
+              }
+            ],
+            "settings": {
+              "decideGamePlan": false,
+              "invite": true,
+              "isPublic": false,
+              "join": false,
+              "modifyRow": false,
+              "suggest": true
+            },
+            "status": 0,
+            "title": "Title",
+            "whenSuggestions": [],
+            "whereSuggestions": []
+            }
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "You're not allowed to view this teeup."
+        }
+
+### Delete Teeup [DELETE]
+delete the teeup
+
++ Request (application/json)
+
+
+
++ Response 200 (application/json)
+
+        {
+            "status": 200,
+            "teeup": {
+                "title": "title",
+                "message": "message",
+                "status": {
+                    "arrived": [],
+                    "cancelled": [],
+                    "going": [],
+                    "interested": ["22d0f061-3a35-40b1-b9bb-6b67fb4ceb61"],
+                    "invitedContacts": [],
+                    "invitedUsers": [],
+                    "mightGo": [],
+                    "notGoing": [],
+                    "onMyWay": []
+                },
+                "participants": ["22d0f061-3a35-40b1-b9bb-6b67fb4ceb61"],
+                "createdBy": "22d0f061-3a35-40b1-b9bb-6b67fb4ceb61",
+                "teeupStates": 0,
+                "createdAt": "2016-12-29T01:25:30.389Z",
+                "id": "e01328aa-1c46-4b6f-bf79-a4ecbed2ab0e"
+            }
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "You're not allowed to modify this teeup."
+        }
+
+## Invite users to teeup [/api/teeups/{teeup_id}/inviteUsers]
+Allows you to invite users
+### Invite users [POST]
+This end point will invite users by email or phone (or both)
+it'll either find users that exist in the database and create a participant
+object. If they don't yet exist, it will still make a participant object
+with its corresponding email/phone.
+
++ Request (application/json)
+
+        + Parameters
+            + teeup_id (numbers and letters) - ID of the teeup
+
+        {
+            inviteEmails: ["An array of emails to invite"],
+            invitePhones: ["An array of phone numbers to invite"]
+        }
+
++ Response 200 (application/json)
+
+        {
+            "status": 200,
+            "message": "Users invited successfully",
+            "teeup":
+                "title": "title",
+                "message": "message",
+                "status": {
+                    "arrived": [],
+                    "cancelled": [],
+                    "going": [],
+                    "interested": ["22d0f061-3a35-40b1-b9bb-6b67fb4ceb61"],
+                    "invitedContacts": [],
+                    "invitedUsers": [],
+                    "mightGo": [],
+                    "notGoing": [],
+                    "onMyWay": []
+                },
+                "participants": [
+                    {
+                      "email": "qjones@njit.edu",
+                      "id": "11ea73e9-b27d-4521-883b-21f92ebb017e",
+                      "inviteDate": "2017-01-11T02:04:41.898Z",
+                      "role": 2,
+                      "status": 0,
+                      "teeupId": "9db8c91f-a49d-48ff-b964-28bdbac98ce6",
+                      "userId": "3ebe0c9b-197b-4f8f-97c5-a15c4814e910"
+                    },
+                    {
+                      "email": "dick2dick@test.com",
+                      "id": "39874e2a-a78b-4b96-9a4e-30059440e584",
+                      "inviteDate": "2017-01-11T02:34:59.175Z",
+                      "role": 2,
+                      "status": 0,
+                      "teeupId": "9db8c91f-a49d-48ff-b964-28bdbac98ce6"
+                    },
+                    {
+                      "email": "dickweedmcgee@lickmytaint.cunt",
+                      "id": "ff86e8a6-25e8-4cdb-becb-ceb3ecc576d4",
+                      "inviteDate": "2017-01-11T02:28:39.890Z",
+                      "role": 2,
+                      "status": 0,
+                      "teeupId": "9db8c91f-a49d-48ff-b964-28bdbac98ce6",
+                      "userId": "d80904e5-49b6-49f5-962f-3f809d8af8f5"
+                    },
+                    {
+                      "email": "deep7176@gmail.com",
+                      "id": "10498cd3-44c3-4eb1-a343-d85b1ca36907",
+                      "inviteDate": "2017-01-11T02:01:17.254Z",
+                      "role": 2,
+                      "status": 0,
+                      "teeupId": "9db8c91f-a49d-48ff-b964-28bdbac98ce6",
+                      "userId": "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+                    },
+                    {
+                      "id": "c9570c00-e9d2-41dd-86ae-d1589c39e5dd",
+                      "inviteDate": "2017-01-11T02:01:17.231Z",
+                      "role": 0,
+                      "status": 3,
+                      "teeupId": "9db8c91f-a49d-48ff-b964-28bdbac98ce6",
+                      "userId": "5db07ef3-2a25-41aa-8f5f-da6ccb91a450"
+                    }
+                ],
+                "createdBy": "22d0f061-3a35-40b1-b9bb-6b67fb4ceb61",
+                "teeupStates": 0,
+                "createdAt": "2016-12-29T01:25:30.389Z",
+                "id": "e01328aa-1c46-4b6f-bf79-a4ecbed2ab0e"
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "You have the permission to do that"
+        }
+
+## Change User status [/api/teeups/{teeup_uid}/updateUserStatus]
+updates the participant's status
+### Change User status [POST]
+This updates the teeup's status must be one of the following
+0 = Invited,
+1 = Might Go,
+2 = I'm going,
+3 = Interested,
+4 = not going,
+5 = on my way,
+6 = arrived
+
++ Request (application/json)
+
+        + Parameters
+            + teeup_id (numbers and letters) - ID of the teeup
+
+        {
+            "status" : 2
+        }
+
++ Response 200 (application/json)
+
+        {
+            "status": 200,
+            "message": "Successfully updated status",
+            "newStatus": 2
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "You must be a participant in the teeup"
+        }
+
+## Change Teeup status [/api/teeups/{teeup_uid}/updateStatus]
+updates the teeup status
+### Change Teeup status [POST]
+This updates the teeup's status must be one of the following
+0 = Planning,
+1 = its on,
+2 = Happening,
+3 = it's Ended,
+4 = Cancelled
+
++ Request (application/json)
+
+        + Parameters
+            + teeup_id (numbers and letters) - ID of the teeup
+
+        {
+            "status" : 2
+        }
+
++ Response 200 (application/json)
+
+        {
+            "status": 200,
+            "message": "Successfully updated status",
+            "newTeeupStatus": 2
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "You must be the creator, admin or an organizer to change the teeup status"
+        }
+
+## Change Teeup status [/api/teeups/{teeup_uid}/rename]
+updates the teeup status
+### Change Teeup status [POST]
+This updates the teeup's title must be 50 or less
+
++ Request (application/json)
+
+        + Parameters
+            + teeup_id (numbers and letters) - ID of the teeup
+
+        {
+            "newTitle": "Title"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "status": 200,
+            "message": "Successfully updated status",
+            "newTitle": "Title"
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "You must be the creator, admin or an organizer to change the teeup status"
+        }
+
+## Change Teeup settings [/api/teeups/{teeup_uid}/settings]
+updates the teeup settings
+### Change Teeup settings [PUT]
+
++ Request (application/json)
+
+        + Parameters
+            + teeup_id (numbers and letters) - ID of the teeup
+
+        {
+            "isPublic": true,
+            "join": true,
+            "invite": true,
+            "suggest": true,
+            "decideGamePlan": true,
+            "modifyRow": true
+        }
+
++ Response 200 (application/json)
+
+        {
+            "status": 200,
+            "message": "Successfully updated settings!",
+            "settings": {
+                "isPublic": true,
+                "join": true,
+                "invite": true,
+                "suggest": true,
+                "decideGamePlan": true,
+                "modifyRow": true
+            }
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "Invalid field parameters, takes boolean fields isPublic, join, invite, suggest, decideGamePlan, and modifyRow."
+        }
+
+## Teeup Auto Change Its On Minimum Value [/api/teeups/auto/itsOnMin/{teeup_id}]
+Takes an integer value "min" and when that value is reached, auto changes teeup
+status to It's On!
+### Its on min [POST]
+
++ Request (application/json)
+
+        + Parameters
+            + teeup_id (numbers and letters) - ID of the teeup
+
+        {
+            min: 2
+        }
++ Response 200 (application/json)
+
+        {
+          "status": 200,
+          "message": "Success",
+          "newMin" : 2
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "Invalid field parameters, takes boolean fields isPublic, join, invite, suggest, decideGamePlan, and modifyRow."
+        }
+
+## Teeup Auto Change Happening if when is reached [/api/teeups/auto/happeningIfWhenIsReached/{teeup_id}]
+If this is set to true, changes the status of the teeup to Happening when the whenFrom date is reached.
+Gameplan must be set.
+### Happening if when is reached auto change [POST]
++ Request (application/json)
+
+        + Parameters
+            + teeup_id (numbers and letters) - ID of the teeup
+
+        {
+            happeningIfWhenIsReached: true
+        }
++ Response 200 (application/json)
+
+        {
+          "status": 200,
+          "message": "Success",
+          "happeningIfWhenIsReached" : true
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "Invalid field parameters, takes boolean fields isPublic, join, invite, suggest, decideGamePlan, and modifyRow."
+        }
+
+## Teeup Auto Change Require When Be Decided [/api/teeups/auto/requireWhenBeDecided/{teeup_id}]
+For this to be set to true, Happening if when is reached must be set to true.
+Ensures that the current gameplan is decided before the status of the teeup is
+set to Happening.
+### Require when be decided for auto change [POST]
++ Request (application/json)
+
+        + Parameters
+            + teeup_id (numbers and letters) - ID of the teeup
+
+        {
+            requireWhenBeDecided: true
+        }
++ Response 200 (application/json)
+
+        {
+          "status": 200,
+          "message": "Success",
+          "requireWhenBeDecided" : true
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "Invalid field parameters, takes boolean fields isPublic, join, invite, suggest, decideGamePlan, and modifyRow."
+        }
+
+## Teeup Auto Change Require It's On Be Set First [/api/teeups/auto/requireItsOnBeSetFirst/{teeup_id}]
+For this to be set to true, Happening if when is reached must be set to true.
+Ensures that that the Teeup Status is set to It's On before it auto changes to Happening.
+### Require It's On Be Set First for auto change [POST]
+
++ Request (application/json)
+
+        + Parameters
+            + teeup_id (numbers and letters) - ID of the teeup
+
+        {
+            requireItsOnBeSetFirst: true
+        }
++ Response 200 (application/json)
+
+        {
+          "status": 200,
+          "message": "Success",
+          "requireItsOnBeSetFirst" : true
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "Invalid field parameters, takes boolean fields isPublic, join, invite, suggest, decideGamePlan, and modifyRow."
+        }
+
+## When suggestions for a Teeup [/api/teeups/{teeup_uid}/when]
+### Get a list of when suggestions for a Teeup [GET]
+Gets a list of when suggestions for a teeup and if theres a when in the gameplan then it will get that too
+
++ Request (application/json)
+
+        + Parameters
+            + teeup_id (numbers and letters) - ID of the teeup
+
++ Response 200 (application/json)
+
+        {
+          "status": 200,
+          "gamePlanWhen": {
+            "createdAt": "2017-01-03T07:14:24.244Z",
+            "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+            "fromDate": "2016-12-29T08:43:52.000Z",
+            "id": "32aee301-cd33-4b18-8356-952c7d242ee6",
+            "teeupId": "1b546bc4-1981-4b05-afab-fbced8922cd6",
+            "thumbsDown": [
+              "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+            ],
+            "thumbsUp": [],
+            "toDate": "2016-12-29T09:34:07.000Z",
+            "thumbsUpCount": 0,
+            "thumbsDownCount": 1
+          },
+          "whenSuggestions": [
+            {
+              "createdAt": "2017-01-03T07:14:24.244Z",
+              "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+              "fromDate": "2016-12-29T08:43:52.000Z",
+              "id": "32aee301-cd33-4b18-8356-952c7d242ee6",
+              "teeupId": "1b546bc4-1981-4b05-afab-fbced8922cd6",
+              "thumbsDown": [
+                "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+              ],
+              "thumbsUp": [],
+              "toDate": "2016-12-29T09:34:07.000Z",
+              "thumbsUpCount": 0,
+              "thumbsDownCount": 1
+            },
+            {
+              "createdAt": "2017-01-03T09:38:13.486Z",
+              "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+              "fromDate": "2016-12-29T08:43:52.000Z",
+              "id": "909dd8b1-6855-4b62-b64c-f31e3a0914f1",
+              "teeupId": "1b546bc4-1981-4b05-afab-fbced8922cd6",
+              "thumbsUp": [
+                "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+              ],
+              "toDate": "2016-12-29T09:34:07.000Z",
+              "thumbsUpCount": 1,
+              "thumbsDownCount": 0
+            }
+          ]
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "Invalid field parameters, takes boolean fields isPublic, join, invite, suggest, decideGamePlan, and modifyRow."
+        }
+
+## Get the gameplan of a teeup [/api/teeups/{teeup_uid}/gameplan]
+route for getting the gameplan and the list of suggestions
+### Get Gameplan [GET]
+Gets the teeup's current gamePlanWhen and gamePlanWhere
+
++ Request (application/json)
+
+        + Parameters
+            + teeup_id (numbers and letters) - ID of the teeup
+
++ Response 200 (application/json)
+
+        {
+          "status": 200,
+          "message": "Successfully retrieved gameplan",
+          "gamePlanWhen": {
+            "createdAt": "2017-01-03T07:14:24.244Z",
+            "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+            "creator": {
+              "createdAt": "2017-01-01T05:38:44.792Z",
+              "firstName": "Deep",
+              "id": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+              "lastName": "Patel",
+              "username": "deeperthanyou",
+              "profile": {},
+              "privacy": {
+                "Bio": 0,
+                "Dob": 0,
+                "gender": 0,
+                "nationality": 0,
+                "nativeLanguage": 0,
+                "hometown": 0,
+                "school": 0,
+                "studentType": 0,
+                "majors": 0,
+                "campusOrganizations": 0
+              },
+              "settings": {
+                "notifications": true,
+                "loginMethod": 0
+              }
+            },
+            "fromDate": "2016-12-29T08:43:52.000Z",
+            "id": "32aee301-cd33-4b18-8356-952c7d242ee6",
+            "teeupId": "1b546bc4-1981-4b05-afab-fbced8922cd6",
+            "thumbsDown": [
+              "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+            ],
+            "thumbsUp": [],
+            "toDate": "2016-12-29T09:34:07.000Z",
+            "thumbsUpCount": 0,
+            "thumbsDownCount": 1
+          },
+          "whenSuggestions": [
+            {
+              "createdAt": "2017-01-03T07:14:24.244Z",
+              "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+              "creator": {
+                "createdAt": "2017-01-01T05:38:44.792Z",
+                "firstName": "Deep",
+                "id": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                "lastName": "Patel",
+                "username": "deeperthanyou",
+                "profile": {},
+                "privacy": {
+                  "Bio": 0,
+                  "Dob": 0,
+                  "gender": 0,
+                  "nationality": 0,
+                  "nativeLanguage": 0,
+                  "hometown": 0,
+                  "school": 0,
+                  "studentType": 0,
+                  "majors": 0,
+                  "campusOrganizations": 0
+                },
+                "settings": {
+                  "notifications": true,
+                  "loginMethod": 0
+                }
+              },
+              "fromDate": "2016-12-29T08:43:52.000Z",
+              "id": "32aee301-cd33-4b18-8356-952c7d242ee6",
+              "teeupId": "1b546bc4-1981-4b05-afab-fbced8922cd6",
+              "thumbsDown": [
+                "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+              ],
+              "thumbsUp": [],
+              "toDate": "2016-12-29T09:34:07.000Z",
+              "thumbsUpCount": 0,
+              "thumbsDownCount": 1
+            },
+            {
+              "createdAt": "2017-01-03T09:38:13.486Z",
+              "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+              "creator": {
+                "createdAt": "2017-01-01T05:38:44.792Z",
+                "firstName": "Deep",
+                "id": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                "lastName": "Patel",
+                "username": "deeperthanyou",
+                "profile": {},
+                "privacy": {
+                  "Bio": 0,
+                  "Dob": 0,
+                  "gender": 0,
+                  "nationality": 0,
+                  "nativeLanguage": 0,
+                  "hometown": 0,
+                  "school": 0,
+                  "studentType": 0,
+                  "majors": 0,
+                  "campusOrganizations": 0
+                },
+                "settings": {
+                  "notifications": true,
+                  "loginMethod": 0
+                }
+              },
+              "fromDate": "2016-12-29T08:43:52.000Z",
+              "id": "909dd8b1-6855-4b62-b64c-f31e3a0914f1",
+              "teeupId": "1b546bc4-1981-4b05-afab-fbced8922cd6",
+              "thumbsUp": [
+                "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+              ],
+              "toDate": "2016-12-29T09:34:07.000Z",
+              "thumbsUpCount": 1,
+              "thumbsDownCount": 0
+            }
+          ],
+          "whereSuggestions": []
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "Invalid field parameters, takes boolean fields isPublic, join, invite, suggest, decideGamePlan, and modifyRow."
+        }
+
+## Teeup when suggestions [/api/when]
+This route lets the user interact with a when suggestions.
+### Create a When Suggestion [POST]
+Let's the user create a when suggestion
+the params in the body is milliseconds
+
++ Request (application/json)
+
+        {
+            "teeupId": "f003bfba-acf7-4c60-a99a-c476dce0a124",
+            "whenTo": 1483004047,
+            "whenFrom": 1483001032,
+            "dateText": "Tomorrow",
+            "timeText": "Afternoon"
+        }
+
++ Response 201 (application/json)
+
+        {
+            "status": 201,
+            "message": "Successfully created suggestion!",
+            "when": {
+                "teeupId": "f003bfba-acf7-4c60-a99a-c476dce0a124",
+                "thumbsUp": ["a47537c7-958c-424c-81bb-d1d0612c0f9e"],
+                "fromDate": "2016-12-29T08:43:52.000Z",
+                "toDate": "2016-12-29T09:34:07.000Z",
+                "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                "createdAt": "2017-01-05T08:33:12.431Z",
+                "id": "f65b51cd-93fd-4150-90d3-ad6b4f6c0f22",
+                "thumbsUpCount": 1,
+                "thumbsDownCount": 0
+            }
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "Teeup not found."
+        }
+
+## Get a when suggestion [/api/when/{when_id}]
+This route lets the user interact with a specific teeup's when suggestions.
+### Get when suggestion [GET]
+Gets a when suggestion and the details about it
+
++ Request (application/json)
+
+        + Parameters
+            + when_id (numbers and letters) - ID of the when suggestion
+
++ Response 200 (application/json)
+
+        {
+            "status": 200,
+            "message": "Successfully retrieved when suggestion",
+            "when": {
+                "createdAt": "2017-01-05T08:33:12.431Z",
+                "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                "fromDate": "2016-12-29T08:43:52.000Z",
+                "id": "f65b51cd-93fd-4150-90d3-ad6b4f6c0f22",
+                "teeupId": "f003bfba-acf7-4c60-a99a-c476dce0a124",
+                "thumbsUp": [
+                  "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+                ],
+                "toDate": "2016-12-29T09:34:07.000Z",
+                "thumbsUpCount": 1,
+                "thumbsDownCount": 0
+            }
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "Unauthorized."
+        }
+
+### delete when suggestion [DELETE]
+Deletes a when suggestion and the details about it
+
++ Request (application/json)
+
+        + Parameters
+            + when_id (numbers and letters) - ID of the when suggestion
+
++ Response 200 (application/json)
+
+        {
+            "status": 200,
+            "message": "Successfully retrieved when suggestion",
+            "when": {
+                "createdAt": "2017-01-05T08:33:12.431Z",
+                "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                "fromDate": "2016-12-29T08:43:52.000Z",
+                "id": "f65b51cd-93fd-4150-90d3-ad6b4f6c0f22",
+                "teeupId": "f003bfba-acf7-4c60-a99a-c476dce0a124",
+                "thumbsUp": [
+                  "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+                ],
+                "toDate": "2016-12-29T09:34:07.000Z",
+                "thumbsUpCount": 1,
+                "thumbsDownCount": 0
+            }
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "Unauthorized."
+        }
+
+## Like a when suggestion [/api/when/{when_id}/like]
+### Like a when suggestion [GET]
+
++ Request (application/json)
+
+        + Parameters
+            + when_id (numbers and letters) - ID of the when suggestion
+
++ Response 200 (application/json)
+
+        {
+            "status": 200,
+            "message": "Successfully liked!",
+            "when": {
+                "createdAt": "2017-01-05T08:33:12.431Z",
+                "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                "fromDate": "2016-12-29T08:43:52.000Z",
+                "id": "f65b51cd-93fd-4150-90d3-ad6b4f6c0f22",
+                "teeupId": "f003bfba-acf7-4c60-a99a-c476dce0a124",
+                "thumbsDown": [],
+                "thumbsUp": [
+                "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+                ],
+                "toDate": "2016-12-29T09:34:07.000Z",
+                "thumbsUpCount": 1,
+                "thumbsDownCount": 0
+            }
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "Unauthorized."
+        }
+
+## Dislike a when suggestion [/api/when/{when_id}/dislike]
+### Dislike a when suggestion [GET]
+
++ Request (application/json)
+
+        + Parameters
+            + when_id (numbers and letters) - ID of the when suggestion
+
++ Response 200 (application/json)
+
+        {
+            "status": 200,
+            "message": "Successfully disliked!",
+            "when": {
+                "createdAt": "2017-01-05T08:33:12.431Z",
+                "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                "fromDate": "2016-12-29T08:43:52.000Z",
+                "id": "f65b51cd-93fd-4150-90d3-ad6b4f6c0f22",
+                "teeupId": "f003bfba-acf7-4c60-a99a-c476dce0a124",
+                "thumbsDown": [
+                "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+                ],
+                "thumbsUp": [],
+                "toDate": "2016-12-29T09:34:07.000Z",
+                "thumbsUpCount": 0,
+                "thumbsDownCount": 1
+            }
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "Unauthorized."
+        }
+
+## Make gameplan when [/api/when/{when_id}/makeGamePlan]
+Allows you to set a gameplan when object by its id the gameplan.
+### Make when the gamplan [GET]
++ Request (application/json)
+
+        + Parameters
+            + when_id (numbers and letters) - ID of the when suggestion
+
++ Response 200 (application/json)
+
+        {
+            "status": 200,
+            "message": "Successfully updated gameplan",
+            "when": {
+                "createdAt": "2017-01-05T08:33:12.431Z",
+                "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                "fromDate": "2016-12-29T08:43:52.000Z",
+                "id": "f65b51cd-93fd-4150-90d3-ad6b4f6c0f22",
+                "teeupId": "f003bfba-acf7-4c60-a99a-c476dce0a124",
+                "thumbsDown": [
+                "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+                ],
+                "thumbsUp": [],
+                "toDate": "2016-12-29T09:34:07.000Z",
+                "thumbsUpCount": 0,
+                "thumbsDownCount": 1
+            }
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "Unauthorized."
+        }
+
+## Decide a when [/api/teeups/decideWhen/{teeup_id}/{when_id}]
+Make a gameplan when decided
+### Decide a when [GET]
++ Request (application/json)
+
+        + Parameters
+            + teeup_id (numbers and lettes) - ID of the teeup
+            + when_id (numbers and letters) - ID of the when suggestion
+
++ Response 200 (application/json)
+
+        {
+            "status": 200,
+            "message": "Success"
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "Unauthorized."
+        }
+
+## Undecide a when [/api/teeups/undecideWhen/{teeup_id}/{when_id}]
+Make a gameplan when decided
+### Undecide a when [GET]
++ Request (application/json)
+
+        + Parameters
+            + teeup_id (numbers and lettes) - ID of the teeup
+            + when_id (numbers and letters) - ID of the when suggestion
+
++ Response 200 (application/json)
+
+        {
+            "status": 200,
+            "message": "Success"
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "Unauthorized."
+        }
+
+## Upload image [/api/image]
+This route is for uploading profile pic
+### Upload profile pic by data [POST]
+Lets the user upload a profile pic
+
++ Request (application/json)
+
+        {
+            "imageData": "REALLY LONG BASE64 DATA",
+            "imageType": "JPEG",
+        }
+
++ Response 200 (application/json)
+
+        {
+          "status": 200,
+          "message": "Successful",
+          "image": "8a455983-cb92-4487-8641-0be97cdc8738"
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "Unauthorized."
+        }
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "Missing image data or image type."
+        }
+
+## Upload image file [/api/image/file/upload{?setDefault}]
+This route is for uploading profile pic
+### Upload image file [POST]
+Lets the user upload an image file using multipart/form-data image upload
+the file key or name should be "image". The image must be a png or jpeg
+
++ Request (application/json)
+    + Attributes
+        + Part
+            + name: image
+            + filename: `example.jpeg`
+
++ Response 200 (application/json)
+
+        {
+            "status": 200,
+            "message": "Image set as default!",
+            "url": "/api/image/file/2e1814b7-1474-4f91-a552-8aef39bf2cd9/profilePic.jpeg"
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "Please define an image"
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "Please upload a png or jpeg file"
+        }
+
+## List the user's image files [/api/image/file/list]
+Route for listing the user's image files
+### Get a list of images [GET]
+shows a list of the user's images
+
++ Response 200 (application/json)
+
+        {
+            "status": 200,
+            "message": "Success!",
+            "files": ["ZTFuTQvjgFfanRV4.jpeg"]
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
+## User image file [/api/image/file/{userId}/{imageName}]
+gets the raw user image
+### Get a list of images [GET]
++ Response 200 (image/png)
+
+        PNG XXXXXXXXXXXXXXXXXXXXXX
+
++ Response 200 (image/jpeg)
+
+        JPEG XXXXXXXXXXXXXXXXXXXXXX
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
+## Chat messages [/api/messages{?id,teeupId,limit,skip,sortOrder}]
+route lets you get and create chat messages
+### Get messages for a given teeup [GET]
+
++ Request (application/json)
+
+        + Parameters
+            + teeupId (numbers and lettes) - ID of the teeup you want messages for
+            + id (numbers and letters) - ID of a given message
+            + sortOrder (desc or asc) - sort the messages in descending or ascending order (default asc)
+            + limit (number) - the number of messages to get (default 10)
+
++ Response 200 (application/json)
+
+        {
+            "messages": [
+                {
+                    "actionType": "MESSAGE",
+                    "createdAt": "2017-07-12T03:17:48.981Z",
+                    "createdBy": "d0cc6e10-a9ac-452b-9387-8f75e34228ff",
+                    "id": "0e41d745-7cb7-4fff-897e-f3634f4d93e9",
+                    "message": "Let's Teeup sometime",
+                    "teeupId": "d30e4128-5ba7-42bc-b2b0-b75d1249e469"
+                },
+                {
+                    "actionType": "MESSAGE",
+                    "createdAt": "2017-07-12T03:17:31.362Z",
+                    "createdBy": "d0cc6e10-a9ac-452b-9387-8f75e34228ff",
+                    "id": "cd16c4c2-2e60-433f-a231-6e1b961f4d9c",
+                    "message": "Hey, what's up??",
+                    "teeupId": "d30e4128-5ba7-42bc-b2b0-b75d1249e469"
+                },
+                {
+                    "actionType": "WHEN_SUGGESTION",
+                    "createdAt": "2017-07-12T03:16:55.416Z",
+                    "id": "6b5ca635-5c96-4c59-8d72-31ec522731b3",
+                    "teeupId": "d30e4128-5ba7-42bc-b2b0-b75d1249e469",
+                    "userId": "d0cc6e10-a9ac-452b-9387-8f75e34228ff",
+                    "whenId": "01ced811-9a0a-452c-8e6d-54986d756dc4"
+                },
+                {
+                    "actionType": "WHERE_VOTE_DOWN",
+                    "createdAt": "2017-07-12T03:16:45.978Z",
+                    "id": "f9b9eb0b-1e9a-4e44-900b-f50bf11a634b",
+                    "teeupId": "d30e4128-5ba7-42bc-b2b0-b75d1249e469",
+                    "userId": "d0cc6e10-a9ac-452b-9387-8f75e34228ff",
+                    "whereId": "09080c31-797f-4fc1-9c7c-b2dbeb2f3901"
+                },
+                {
+                    "actionType": "WHERE_SUGGESTION",
+                    "createdAt": "2017-07-12T03:16:07.214Z",
+                    "id": "60c18a7f-f07b-4e27-acae-3b02044abd26",
+                    "teeupId": "d30e4128-5ba7-42bc-b2b0-b75d1249e469",
+                    "userId": "d0cc6e10-a9ac-452b-9387-8f75e34228ff",
+                    "whereId": "09080c31-797f-4fc1-9c7c-b2dbeb2f3901"
+                }
+            ]
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
+## Register Firebase Push Token [/api/messages/registerToken]
+Endpoint to register a push notification token to the user logged in
+### Register token [POST]
+
++ Request (application/json)
+
+        {
+            "pushToken": "firebase push notification token"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "status": 200,
+            "message": "Token added!"
+        }
+
+## Unregister Firebase Push Token [/api/messages/unregisterToken]
+Endpoint to unregister a push notification token to the user logged in
+### Unregister token [POST]
+
++ Request (application/json)
+
+        {
+            "pushToken": "firebase push notification token"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "status": 200,
+            "message": "Token removed!"
+        }
+
+
+## Get the image data of an image by id [/api/image/{imageId}]
+This route is for getting any pic by id
+### Get image data by id [GET]
+
++ Request (application/json)
+    + Parameters
+        + imageId (numbers and letters) - ID of the image object
+
++ Response 200 (application/json)
+
+        {
+          "status": 200,
+          "message": "Successfully retrieved from cache",
+          "image": {
+            "id": "8a455983-cb92-4487-8641-0be97cdc8738",
+            "imageData": "REALLY LONG BASE64 DATA",
+            "type": "jpeg",
+            "createdBy": "4542bd4b-88fe-413f-8d37-cf4b60b8189a",
+            "createdAt": "Tue Jan 31 2017 06:16:22 GMT+0000 (UTC)"
+          }
+        }
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "Unauthorized."
+        }
+
+## Upload bulk contacts [/api/contact/bulk]
+This route allows users to upload contacts in bulk with. (Deletes your previous upload)
+DO NOT USE TO ADD CONTACT TO EXISTING CONTACTS, ONLY FOR INITIAL BULK PUSH
+### Push bulk contacts [POST]
++ Request (application/json)
+
+        {
+          "contacts" : [
+            {
+              "firstName" : "Parth",
+              "lastName" : "Patel",
+              "emails" : ["dicks@gmail.com", "cocksmith@gmail.com"],
+              "phones" : ["+16097050224"],
+              "profilePic" : {
+              "imageData": "{base64 string}",
+              "imageType" : "jpeg"
+              }
+            },
+            {
+              "firstName" : "Parth",
+              "lastName" : "Patel",
+              "emails" : ["dicks@gmail.com", "cocksmith@gmail.com"],
+              "phones" : ["+16097050224"],
+              "profilePic" : {
+              "imageData": "{base64 string}",
+              "imageType" : "jpeg"
+              }
+            },
+            {
+              "firstName" : "Parth",
+              "lastName" : "Patel",
+              "emails" : ["dicks@gmail.com", "cocksmith@gmail.com"],
+              "phones" : ["+16097050224"],
+              "profilePic" : {
+                "imageData": "{base64 string}",
+                "imageType" : "jpeg"
+              }
+            }
+          ]
+        }
+
++ Response 200 (application/json)
+
+        {
+          "status": 200,
+          "message": "Saved contacts successfully",
+          "contacts": [
+            {
+              "phones": [
+                "+16097050224"
+              ],
+              "emails": [
+                "dicks@gmail.com",
+                "cocksmith@gmail.com"
+              ],
+              "createdBy": "39d2c3e1-1f49-4918-8f8e-3aef5c2f70d2",
+              "id": "9ce66dab-5a55-4adc-b228-6d008010135f",
+              "createdAt": "2017-02-01T06:12:45.564Z",
+              "firstName": "Parth",
+              "lastName": "Patel",
+              "profilePic": {
+                "createdAt": "2017-02-01T06:12:45.564Z",
+                "createdBy": "39d2c3e1-1f49-4918-8f8e-3aef5c2f70d2",
+                "id": "1b764202-7bc8-473c-897f-dba45c44eaa8",
+                "imageData": "{base64 string}",
+                "type": "jpeg"
+              }
+            },
+            {
+              "phones": [
+                "+16097050224"
+              ],
+              "emails": [
+                "dicks@gmail.com",
+                "cocksmith@gmail.com"
+              ],
+              "createdBy": "39d2c3e1-1f49-4918-8f8e-3aef5c2f70d2",
+              "id": "b6d40610-f2ce-4189-8010-aa9b77e47998",
+              "createdAt": "2017-02-01T06:12:45.558Z",
+              "firstName": "Parth",
+              "lastName": "Patel",
+              "profilePic": {
+                "createdAt": "2017-02-01T06:12:45.558Z",
+                "createdBy": "39d2c3e1-1f49-4918-8f8e-3aef5c2f70d2",
+                "id": "4c0c7de3-ea66-4914-ae16-3f52e11ec99f",
+                "imageData": "{base64 string}",
+                "type": "jpeg"
+              }
+            },
+            {
+              "phones": [
+                "+16097050224"
+              ],
+              "emails": [
+                "dicks@gmail.com",
+                "cocksmith@gmail.com"
+              ],
+              "createdBy": "39d2c3e1-1f49-4918-8f8e-3aef5c2f70d2",
+              "id": "4ef63511-bec7-4694-a272-b03ac9bcdc8b",
+              "createdAt": "2017-02-01T06:12:45.605Z",
+              "firstName": "Parth",
+              "lastName": "Patel",
+              "profilePic": {
+                "createdAt": "2017-02-01T06:12:45.605Z",
+                "createdBy": "39d2c3e1-1f49-4918-8f8e-3aef5c2f70d2",
+                "id": "b45f9e0d-9148-404c-b365-5a10ad5df56a",
+                "imageData": "{base64 string}",
+                "type": "jpeg"
+              }
+            }
+          ]
+        }
+
+## TellUsWho Sense of Community [/api/telluswho/senseOfCommunity]
+This route is for setting all the answers for sense of community section of telluswho
+### Answers to survey in bulk [POST]
+
++ Request (application/json)
+
+        {
+            "studentsCare" : 1,
+            "facultyCare" : 1,
+            "connected" : 1,
+            "community" : 1,
+            "likeFamily" : 1,
+            "isolated" : 1,
+            "friendSupport" : 1,
+            "satisfied" : 1,
+            "loan" : 1,
+            "advice" : 1
+        }
+
++ Response 200 (application/json)
+
+        {
+            "status": 200,
+            "message": "Success",
+            "profile": {
+                "createdAt": "2017-02-09T17:09:42.586Z",
+                "id": "86d59046-8a63-4473-a91b-af932b16f367",
+                "progress": 0,
+                "senseOfCommunityId": "04e80a2e-80d9-4479-9954-f7a2fe65349c",
+                "userId": "7cc5359a-8293-4117-a995-ff3c00830b5c",
+                "senseOfCommunity": {
+                    "studentsCare": 1,
+                    "facultyCare": 1,
+                    "connected": 1,
+                    "community": 1,
+                    "likeFamily": 1,
+                    "isolated": 1,
+                    "friendSupport": 1,
+                    "satisfied": 1,
+                    "loan": 1,
+                    "advice": 1,
+                    "id": "04e80a2e-80d9-4479-9954-f7a2fe65349c",
+                    "createdAt": "2017-02-09T17:33:47.706Z",
+                    "profileId": "86d59046-8a63-4473-a91b-af932b16f367"
+                }
+            }
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "Unauthorized."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "Missing image data or image type."
+        }
+
+## TellUsWho Sociability [/api/telluswho/sociability]
+This route is for setting all the answers for sociability section of telluswho
+### Answers to survey in bulk [POST]
+
++ Request (application/json)
+
+        {
+           "likePeople" : 1,
+           "mixSocially" : 1,
+           "preferOthers" : 1,
+           "peopleStimulating" : 1,
+           "makingContacts" : 1,
+           "sociallyAwkward" : 1,
+           "talkToStrangers" : 1,
+           "tenseWithStrangers" : 1,
+           "tenseWithPeople" : 1,
+           "nervousAuthority" : 1,
+           "uncomfortableParties" : 1,
+           "oppositeSex" : 1
+        }
+
++ Response 200 (application/json)
+
+        {
+          "status": 200,
+          "message": "Success",
+          "sociability": {
+            "createdAt": "2017-02-09T18:50:13.664Z",
+            "id": "5186d2d5-e7f1-4256-aa6e-8b0373145965",
+            "likePeople": 1,
+            "makingContacts": 1,
+            "mixSocially": 1,
+            "nervousAuthority": 1,
+            "oppositeSex": 1,
+            "peopleStimulating": 1,
+            "preferOthers": 1,
+            "sociallyAwkward": 1,
+            "talkToStrangers": 1,
+            "tenseWithPeople": 1,
+            "tenseWithStrangers": 1,
+            "uncomfortableParties": 1
+          }
+        }
+
++ Response 401 (application/json)
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "Unauthorized."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "status": 400,
+            "message": "Missing image data or image type."
+        }
+
+## TellUsWho Wellbeing [/api/telluswho/wellbeing]
+This route is for setting all the answers for wellbeing section of telluswho
+### Answers to survey in bulk [POST]
+
++ Request (application/json)
+
+        {
+          "physicalHealth": 1,
+          "happyAtNjit": 1,
+          "stayAtNjit": 1,
+          "lackCompanionShip": 1,
+          "feelLeftOut": 1,
+          "feelIsolated": 1,
+          "feelFailure": 1,
+          "highSelfEsteem": 1,
+          "lifeIdeal": 1,
+          "lifeExcellent": 1,
+          "lifeSatisfied": 1,
+          "doNotHaveProud": 1
+        } 
+
++ Response 200 (application/json)
+
+        {
+          "status": 200,
+          "message": "Success",
+          "wellbeing": {
+            "createdAt": "2017-02-09T19:15:18.888Z",
+            "doNotHaveProud": 1,
+            "feelFailure": 1,
+            "feelIsolated": 1,
+            "feelLeftOut": 1,
+            "happyAtNjit": 1,
+            "highSelfEsteem": 1,
+            "id": "c6ee8ddd-657b-4d1e-9b3d-b1818148cf84",
+            "lackCompanionShip": 1,
+            "lifeExcellent": 1,
+            "lifeIdeal": 1,
+            "lifeSatisfied": 1,
+            "physicalHealth": 1,
+            "stayAtNjit": 1
+          }
+        }
+        
++ Response 401 (application/json) 
+
+        {
+            "status": 401,
+            "message": "Must be logged in."
+        }
+
++ Response 400 (application/json) 
+
+        {
+            "status": 400,
+            "message": "Unauthorized."
+        }
+        
++ Response 400 (application/json) 
+
+        {
+            "status": 400,
+            "message": "Missing image data or image type."
+        }

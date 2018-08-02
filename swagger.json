@@ -1,0 +1,2166 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This api is the backend api responsible for the whole Coo-e coordinator app.",
+    "title": "Coordinator",
+    "version": "",
+    "x-stoplight": {
+      "id": "haridasu/specs/coordinator"
+    }
+  },
+  "host": "resources.coo-e.com:8080",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/api/contact/bulk": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "contacts": [
+                  {
+                    "createdAt": "2017-02-01T06:12:45.564Z",
+                    "createdBy": "39d2c3e1-1f49-4918-8f8e-3aef5c2f70d2",
+                    "emails": [
+                      "dicks@gmail.com",
+                      "cocksmith@gmail.com"
+                    ],
+                    "firstName": "Parth",
+                    "id": "9ce66dab-5a55-4adc-b228-6d008010135f",
+                    "lastName": "Patel",
+                    "phones": [
+                      "+16097050224"
+                    ],
+                    "profilePic": {
+                      "createdAt": "2017-02-01T06:12:45.564Z",
+                      "createdBy": "39d2c3e1-1f49-4918-8f8e-3aef5c2f70d2",
+                      "id": "1b764202-7bc8-473c-897f-dba45c44eaa8",
+                      "imageData": "{base64 string}",
+                      "type": "jpeg"
+                    }
+                  },
+                  {
+                    "createdAt": "2017-02-01T06:12:45.558Z",
+                    "createdBy": "39d2c3e1-1f49-4918-8f8e-3aef5c2f70d2",
+                    "emails": [
+                      "dicks@gmail.com",
+                      "cocksmith@gmail.com"
+                    ],
+                    "firstName": "Parth",
+                    "id": "b6d40610-f2ce-4189-8010-aa9b77e47998",
+                    "lastName": "Patel",
+                    "phones": [
+                      "+16097050224"
+                    ],
+                    "profilePic": {
+                      "createdAt": "2017-02-01T06:12:45.558Z",
+                      "createdBy": "39d2c3e1-1f49-4918-8f8e-3aef5c2f70d2",
+                      "id": "4c0c7de3-ea66-4914-ae16-3f52e11ec99f",
+                      "imageData": "{base64 string}",
+                      "type": "jpeg"
+                    }
+                  },
+                  {
+                    "createdAt": "2017-02-01T06:12:45.605Z",
+                    "createdBy": "39d2c3e1-1f49-4918-8f8e-3aef5c2f70d2",
+                    "emails": [
+                      "dicks@gmail.com",
+                      "cocksmith@gmail.com"
+                    ],
+                    "firstName": "Parth",
+                    "id": "4ef63511-bec7-4694-a272-b03ac9bcdc8b",
+                    "lastName": "Patel",
+                    "phones": [
+                      "+16097050224"
+                    ],
+                    "profilePic": {
+                      "createdAt": "2017-02-01T06:12:45.605Z",
+                      "createdBy": "39d2c3e1-1f49-4918-8f8e-3aef5c2f70d2",
+                      "id": "b45f9e0d-9148-404c-b365-5a10ad5df56a",
+                      "imageData": "{base64 string}",
+                      "type": "jpeg"
+                    }
+                  }
+                ],
+                "message": "Saved contacts successfully",
+                "status": 200
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Push bulk contacts"
+      }
+    },
+    "/api/image": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "image": "8a455983-cb92-4487-8641-0be97cdc8738",
+                "message": "Successful",
+                "status": 200
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "Missing image data or image type.",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "Lets the user upload a profile pic",
+        "summary": "Upload profile pic by data"
+      }
+    },
+    "/api/image/file/list": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "files": [
+                  "ZTFuTQvjgFfanRV4.jpeg"
+                ],
+                "message": "Success!",
+                "status": 200
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "shows a list of the user's images",
+        "summary": "Get a list of images"
+      }
+    },
+    "/api/image/file/upload": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "properties": {
+                "Part": {
+                  "properties": {
+                    "filename": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "imageName": "{new image name with the extension}",
+                "message": "Success!",
+                "status": 200
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "Please upload a png or jpeg file",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "Lets the user upload an image file using multipart/form-data image upload\nthe file key or name should be \"image\". The image must be a png or jpeg",
+        "summary": "Upload image file"
+      }
+    },
+    "/api/image/file/{userId}/{imageName}": {
+      "get": {
+        "produces": [
+          "image/jpeg",
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "image/jpeg": "JPEG XXXXXXXXXXXXXXXXXXXXXX\n"
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Get a list of images"
+      }
+    },
+    "/api/image/{imageId}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "image": {
+                  "createdAt": "Tue Jan 31 2017 06:16:22 GMT+0000 (UTC)",
+                  "createdBy": "4542bd4b-88fe-413f-8d37-cf4b60b8189a",
+                  "id": "8a455983-cb92-4487-8641-0be97cdc8738",
+                  "imageData": "REALLY LONG BASE64 DATA",
+                  "type": "jpeg"
+                },
+                "message": "Successfully retrieved from cache",
+                "status": 200
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "Unauthorized.",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Get image data by id"
+      }
+    },
+    "/api/messages": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "messages": [
+                  {
+                    "actionType": "MESSAGE",
+                    "createdAt": "2017-07-12T03:17:48.981Z",
+                    "createdBy": "d0cc6e10-a9ac-452b-9387-8f75e34228ff",
+                    "id": "0e41d745-7cb7-4fff-897e-f3634f4d93e9",
+                    "message": "Let's Teeup sometime",
+                    "teeupId": "d30e4128-5ba7-42bc-b2b0-b75d1249e469"
+                  },
+                  {
+                    "actionType": "MESSAGE",
+                    "createdAt": "2017-07-12T03:17:31.362Z",
+                    "createdBy": "d0cc6e10-a9ac-452b-9387-8f75e34228ff",
+                    "id": "cd16c4c2-2e60-433f-a231-6e1b961f4d9c",
+                    "message": "Hey, what's up??",
+                    "teeupId": "d30e4128-5ba7-42bc-b2b0-b75d1249e469"
+                  },
+                  {
+                    "actionType": "WHEN_SUGGESTION",
+                    "createdAt": "2017-07-12T03:16:55.416Z",
+                    "id": "6b5ca635-5c96-4c59-8d72-31ec522731b3",
+                    "teeupId": "d30e4128-5ba7-42bc-b2b0-b75d1249e469",
+                    "userId": "d0cc6e10-a9ac-452b-9387-8f75e34228ff",
+                    "whenId": "01ced811-9a0a-452c-8e6d-54986d756dc4"
+                  },
+                  {
+                    "actionType": "WHERE_VOTE_DOWN",
+                    "createdAt": "2017-07-12T03:16:45.978Z",
+                    "id": "f9b9eb0b-1e9a-4e44-900b-f50bf11a634b",
+                    "teeupId": "d30e4128-5ba7-42bc-b2b0-b75d1249e469",
+                    "userId": "d0cc6e10-a9ac-452b-9387-8f75e34228ff",
+                    "whereId": "09080c31-797f-4fc1-9c7c-b2dbeb2f3901"
+                  },
+                  {
+                    "actionType": "WHERE_SUGGESTION",
+                    "createdAt": "2017-07-12T03:16:07.214Z",
+                    "id": "60c18a7f-f07b-4e27-acae-3b02044abd26",
+                    "teeupId": "d30e4128-5ba7-42bc-b2b0-b75d1249e469",
+                    "userId": "d0cc6e10-a9ac-452b-9387-8f75e34228ff",
+                    "whereId": "09080c31-797f-4fc1-9c7c-b2dbeb2f3901"
+                  }
+                ]
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Get messages for a given teeup"
+      }
+    },
+    "/api/messages/registerToken": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "message": "Token added!",
+                "status": 200
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Register token"
+      }
+    },
+    "/api/messages/unregisterToken": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "message": "Token removed!",
+                "status": 200
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Unregister token"
+      }
+    },
+    "/api/teeups": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {},
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Get coordinating Teeups"
+      },
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "examples": {
+              "application/json": {
+                "message": "Teeup created successfully",
+                "status": true,
+                "teeup": {
+                  "createdAt": "2017-01-04T09:14:53.955Z",
+                  "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                  "id": "f003bfba-acf7-4c60-a99a-c476dce0a124",
+                  "message": "Message",
+                  "settings": {
+                    "decideGamePlan": false,
+                    "invite": true,
+                    "isPublic": false,
+                    "join": false,
+                    "modifyRow": false,
+                    "suggest": true
+                  },
+                  "status": 0,
+                  "title": "Title"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Create a teeup"
+      }
+    },
+    "/api/teeups/auto/happeningIfWhenIsReached/{teeup_id}": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "happeningIfWhenIsReached": true,
+                "message": "Success",
+                "status": 200
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "Invalid field parameters, takes boolean fields isPublic, join, invite, suggest, decideGamePlan, and modifyRow.",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Happening if when is reached auto change"
+      }
+    },
+    "/api/teeups/auto/itsOnMin/{teeup_id}": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "message": "Success",
+                "newMin": 2,
+                "status": 200
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "Invalid field parameters, takes boolean fields isPublic, join, invite, suggest, decideGamePlan, and modifyRow.",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Its on min"
+      }
+    },
+    "/api/teeups/auto/requireItsOnBeSetFirst/{teeup_id}": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "message": "Success",
+                "requireItsOnBeSetFirst": true,
+                "status": 200
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "Invalid field parameters, takes boolean fields isPublic, join, invite, suggest, decideGamePlan, and modifyRow.",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Require It's On Be Set First for auto change"
+      }
+    },
+    "/api/teeups/auto/requireWhenBeDecided/{teeup_id}": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "message": "Success",
+                "requireWhenBeDecided": true,
+                "status": 200
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "Invalid field parameters, takes boolean fields isPublic, join, invite, suggest, decideGamePlan, and modifyRow.",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Require when be decided for auto change"
+      }
+    },
+    "/api/teeups/decideWhen/{teeup_id}/{when_id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "message": "Success",
+                "status": 200
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "Unauthorized.",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Decide a when"
+      }
+    },
+    "/api/teeups/invites": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {},
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Get invites to Teeups"
+      }
+    },
+    "/api/teeups/past": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {},
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Get past teeups"
+      }
+    },
+    "/api/teeups/undecideWhen/{teeup_id}/{when_id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "message": "Success",
+                "status": 200
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "Unauthorized.",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Undecide a when"
+      }
+    },
+    "/api/teeups/{teeup_id}/inviteUsers": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {},
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "You have the permission to do that",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "This end point will invite users by email or phone (or both)\nit'll either find users that exist in the database and create a participant\nobject. If they don't yet exist, it will still make a participant object\nwith its corresponding email/phone.",
+        "summary": "Invite users"
+      }
+    },
+    "/api/teeups/{teeup_uid}": {
+      "delete": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "status": 200,
+                "teeup": {
+                  "createdAt": "2016-12-29T01:25:30.389Z",
+                  "createdBy": "22d0f061-3a35-40b1-b9bb-6b67fb4ceb61",
+                  "id": "e01328aa-1c46-4b6f-bf79-a4ecbed2ab0e",
+                  "message": "message",
+                  "participants": [
+                    "22d0f061-3a35-40b1-b9bb-6b67fb4ceb61"
+                  ],
+                  "status": {
+                    "arrived": [],
+                    "cancelled": [],
+                    "going": [],
+                    "interested": [
+                      "22d0f061-3a35-40b1-b9bb-6b67fb4ceb61"
+                    ],
+                    "invitedContacts": [],
+                    "invitedUsers": [],
+                    "mightGo": [],
+                    "notGoing": [],
+                    "onMyWay": []
+                  },
+                  "teeupStates": 0,
+                  "title": "title"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "You're not allowed to modify this teeup.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "delete the teeup",
+        "summary": "Delete Teeup"
+      },
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "status": 200,
+                "teeup": {
+                  "createdAt": "2017-01-04T09:14:53.955Z",
+                  "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                  "id": "f003bfba-acf7-4c60-a99a-c476dce0a124",
+                  "message": "Message",
+                  "participants": [
+                    {
+                      "id": "effc6830-62b0-4028-9051-8b3bc3e2d906",
+                      "inviteDate": "2017-01-04T09:14:53.987Z",
+                      "role": 0,
+                      "status": 3,
+                      "teeupId": "f003bfba-acf7-4c60-a99a-c476dce0a124",
+                      "userId": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                      "userInfo": {
+                        "createdAt": "2017-01-01T05:38:44.792Z",
+                        "firstName": "Deep",
+                        "id": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                        "lastName": "Patel",
+                        "privacy": {
+                          "Bio": 0,
+                          "Dob": 0,
+                          "campusOrganizations": 0,
+                          "gender": 0,
+                          "hometown": 0,
+                          "majors": 0,
+                          "nationality": 0,
+                          "nativeLanguage": 0,
+                          "school": 0,
+                          "studentType": 0
+                        },
+                        "profile": {},
+                        "settings": {
+                          "loginMethod": 0,
+                          "notifications": true
+                        },
+                        "username": "deeperthanyou"
+                      }
+                    }
+                  ],
+                  "settings": {
+                    "decideGamePlan": false,
+                    "invite": true,
+                    "isPublic": false,
+                    "join": false,
+                    "modifyRow": false,
+                    "suggest": true
+                  },
+                  "status": 0,
+                  "title": "Title",
+                  "whenSuggestions": [],
+                  "whereSuggestions": []
+                }
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "You're not allowed to view this teeup.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "This gets a teeup, or returns an error if the teeup is not found",
+        "summary": "Get Teeup"
+      }
+    },
+    "/api/teeups/{teeup_uid}/gameplan": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "gamePlanWhen": {
+                  "createdAt": "2017-01-03T07:14:24.244Z",
+                  "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                  "creator": {
+                    "createdAt": "2017-01-01T05:38:44.792Z",
+                    "firstName": "Deep",
+                    "id": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                    "lastName": "Patel",
+                    "privacy": {
+                      "Bio": 0,
+                      "Dob": 0,
+                      "campusOrganizations": 0,
+                      "gender": 0,
+                      "hometown": 0,
+                      "majors": 0,
+                      "nationality": 0,
+                      "nativeLanguage": 0,
+                      "school": 0,
+                      "studentType": 0
+                    },
+                    "profile": {},
+                    "settings": {
+                      "loginMethod": 0,
+                      "notifications": true
+                    },
+                    "username": "deeperthanyou"
+                  },
+                  "fromDate": "2016-12-29T08:43:52.000Z",
+                  "id": "32aee301-cd33-4b18-8356-952c7d242ee6",
+                  "teeupId": "1b546bc4-1981-4b05-afab-fbced8922cd6",
+                  "thumbsDown": [
+                    "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+                  ],
+                  "thumbsDownCount": 1,
+                  "thumbsUp": [],
+                  "thumbsUpCount": 0,
+                  "toDate": "2016-12-29T09:34:07.000Z"
+                },
+                "message": "Successfully retrieved gameplan",
+                "status": 200,
+                "whenSuggestions": [
+                  {
+                    "createdAt": "2017-01-03T07:14:24.244Z",
+                    "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                    "creator": {
+                      "createdAt": "2017-01-01T05:38:44.792Z",
+                      "firstName": "Deep",
+                      "id": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                      "lastName": "Patel",
+                      "privacy": {
+                        "Bio": 0,
+                        "Dob": 0,
+                        "campusOrganizations": 0,
+                        "gender": 0,
+                        "hometown": 0,
+                        "majors": 0,
+                        "nationality": 0,
+                        "nativeLanguage": 0,
+                        "school": 0,
+                        "studentType": 0
+                      },
+                      "profile": {},
+                      "settings": {
+                        "loginMethod": 0,
+                        "notifications": true
+                      },
+                      "username": "deeperthanyou"
+                    },
+                    "fromDate": "2016-12-29T08:43:52.000Z",
+                    "id": "32aee301-cd33-4b18-8356-952c7d242ee6",
+                    "teeupId": "1b546bc4-1981-4b05-afab-fbced8922cd6",
+                    "thumbsDown": [
+                      "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+                    ],
+                    "thumbsDownCount": 1,
+                    "thumbsUp": [],
+                    "thumbsUpCount": 0,
+                    "toDate": "2016-12-29T09:34:07.000Z"
+                  },
+                  {
+                    "createdAt": "2017-01-03T09:38:13.486Z",
+                    "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                    "creator": {
+                      "createdAt": "2017-01-01T05:38:44.792Z",
+                      "firstName": "Deep",
+                      "id": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                      "lastName": "Patel",
+                      "privacy": {
+                        "Bio": 0,
+                        "Dob": 0,
+                        "campusOrganizations": 0,
+                        "gender": 0,
+                        "hometown": 0,
+                        "majors": 0,
+                        "nationality": 0,
+                        "nativeLanguage": 0,
+                        "school": 0,
+                        "studentType": 0
+                      },
+                      "profile": {},
+                      "settings": {
+                        "loginMethod": 0,
+                        "notifications": true
+                      },
+                      "username": "deeperthanyou"
+                    },
+                    "fromDate": "2016-12-29T08:43:52.000Z",
+                    "id": "909dd8b1-6855-4b62-b64c-f31e3a0914f1",
+                    "teeupId": "1b546bc4-1981-4b05-afab-fbced8922cd6",
+                    "thumbsDownCount": 0,
+                    "thumbsUp": [
+                      "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+                    ],
+                    "thumbsUpCount": 1,
+                    "toDate": "2016-12-29T09:34:07.000Z"
+                  }
+                ],
+                "whereSuggestions": []
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "Invalid field parameters, takes boolean fields isPublic, join, invite, suggest, decideGamePlan, and modifyRow.",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "Gets the teeup's current gamePlanWhen and gamePlanWhere",
+        "summary": "Get Gameplan"
+      }
+    },
+    "/api/teeups/{teeup_uid}/rename": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "message": "Successfully updated status",
+                "newTitle": "Title",
+                "status": 200
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "You must be the creator, admin or an organizer to change the teeup status",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "This updates the teeup's title must be 50 or less",
+        "summary": "Change Teeup status"
+      }
+    },
+    "/api/teeups/{teeup_uid}/settings": {
+      "put": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "message": "Successfully updated settings!",
+                "settings": {
+                  "decideGamePlan": true,
+                  "invite": true,
+                  "isPublic": true,
+                  "join": true,
+                  "modifyRow": true,
+                  "suggest": true
+                },
+                "status": 200
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "Invalid field parameters, takes boolean fields isPublic, join, invite, suggest, decideGamePlan, and modifyRow.",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Change Teeup settings"
+      }
+    },
+    "/api/teeups/{teeup_uid}/updateStatus": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "message": "Successfully updated status",
+                "newTeeupStatus": 2,
+                "status": 200
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "You must be the creator, admin or an organizer to change the teeup status",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "This updates the teeup's status must be one of the following\n0 = Planning,\n1 = its on,\n2 = Happening,\n3 = it's Ended,\n4 = Cancelled",
+        "summary": "Change Teeup status"
+      }
+    },
+    "/api/teeups/{teeup_uid}/updateUserStatus": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "message": "Successfully updated status",
+                "newStatus": 2,
+                "status": 200
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "You must be a participant in the teeup",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "This updates the teeup's status must be one of the following\n0 = Invited,\n1 = Might Go,\n2 = I'm going,\n3 = Interested,\n4 = not going,\n5 = on my way,\n6 = arrived",
+        "summary": "Change User status"
+      }
+    },
+    "/api/teeups/{teeup_uid}/when": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "gamePlanWhen": {
+                  "createdAt": "2017-01-03T07:14:24.244Z",
+                  "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                  "fromDate": "2016-12-29T08:43:52.000Z",
+                  "id": "32aee301-cd33-4b18-8356-952c7d242ee6",
+                  "teeupId": "1b546bc4-1981-4b05-afab-fbced8922cd6",
+                  "thumbsDown": [
+                    "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+                  ],
+                  "thumbsDownCount": 1,
+                  "thumbsUp": [],
+                  "thumbsUpCount": 0,
+                  "toDate": "2016-12-29T09:34:07.000Z"
+                },
+                "status": 200,
+                "whenSuggestions": [
+                  {
+                    "createdAt": "2017-01-03T07:14:24.244Z",
+                    "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                    "fromDate": "2016-12-29T08:43:52.000Z",
+                    "id": "32aee301-cd33-4b18-8356-952c7d242ee6",
+                    "teeupId": "1b546bc4-1981-4b05-afab-fbced8922cd6",
+                    "thumbsDown": [
+                      "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+                    ],
+                    "thumbsDownCount": 1,
+                    "thumbsUp": [],
+                    "thumbsUpCount": 0,
+                    "toDate": "2016-12-29T09:34:07.000Z"
+                  },
+                  {
+                    "createdAt": "2017-01-03T09:38:13.486Z",
+                    "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                    "fromDate": "2016-12-29T08:43:52.000Z",
+                    "id": "909dd8b1-6855-4b62-b64c-f31e3a0914f1",
+                    "teeupId": "1b546bc4-1981-4b05-afab-fbced8922cd6",
+                    "thumbsDownCount": 0,
+                    "thumbsUp": [
+                      "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+                    ],
+                    "thumbsUpCount": 1,
+                    "toDate": "2016-12-29T09:34:07.000Z"
+                  }
+                ]
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "Invalid field parameters, takes boolean fields isPublic, join, invite, suggest, decideGamePlan, and modifyRow.",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "Gets a list of when suggestions for a teeup and if theres a when in the gameplan then it will get that too",
+        "summary": "Get a list of when suggestions for a Teeup"
+      }
+    },
+    "/api/telluswho/senseOfCommunity": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "message": "Success",
+                "profile": {
+                  "createdAt": "2017-02-09T17:09:42.586Z",
+                  "id": "86d59046-8a63-4473-a91b-af932b16f367",
+                  "progress": 0,
+                  "senseOfCommunity": {
+                    "advice": 1,
+                    "community": 1,
+                    "connected": 1,
+                    "createdAt": "2017-02-09T17:33:47.706Z",
+                    "facultyCare": 1,
+                    "friendSupport": 1,
+                    "id": "04e80a2e-80d9-4479-9954-f7a2fe65349c",
+                    "isolated": 1,
+                    "likeFamily": 1,
+                    "loan": 1,
+                    "profileId": "86d59046-8a63-4473-a91b-af932b16f367",
+                    "satisfied": 1,
+                    "studentsCare": 1
+                  },
+                  "senseOfCommunityId": "04e80a2e-80d9-4479-9954-f7a2fe65349c",
+                  "userId": "7cc5359a-8293-4117-a995-ff3c00830b5c"
+                },
+                "status": 200
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "Missing image data or image type.",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Answers to survey in bulk"
+      }
+    },
+    "/api/telluswho/sociability": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "message": "Success",
+                "sociability": {
+                  "createdAt": "2017-02-09T18:50:13.664Z",
+                  "id": "5186d2d5-e7f1-4256-aa6e-8b0373145965",
+                  "likePeople": 1,
+                  "makingContacts": 1,
+                  "mixSocially": 1,
+                  "nervousAuthority": 1,
+                  "oppositeSex": 1,
+                  "peopleStimulating": 1,
+                  "preferOthers": 1,
+                  "sociallyAwkward": 1,
+                  "talkToStrangers": 1,
+                  "tenseWithPeople": 1,
+                  "tenseWithStrangers": 1,
+                  "uncomfortableParties": 1
+                },
+                "status": 200
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "Missing image data or image type.",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Answers to survey in bulk"
+      }
+    },
+    "/api/telluswho/wellbeing": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "message": "Success",
+                "status": 200,
+                "wellbeing": {
+                  "createdAt": "2017-02-09T19:15:18.888Z",
+                  "doNotHaveProud": 1,
+                  "feelFailure": 1,
+                  "feelIsolated": 1,
+                  "feelLeftOut": 1,
+                  "happyAtNjit": 1,
+                  "highSelfEsteem": 1,
+                  "id": "c6ee8ddd-657b-4d1e-9b3d-b1818148cf84",
+                  "lackCompanionShip": 1,
+                  "lifeExcellent": 1,
+                  "lifeIdeal": 1,
+                  "lifeSatisfied": 1,
+                  "physicalHealth": 1,
+                  "stayAtNjit": 1
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "Missing image data or image type.",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Answers to survey in bulk"
+      }
+    },
+    "/api/when": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "examples": {
+              "application/json": {
+                "message": "Successfully created suggestion!",
+                "status": 201,
+                "when": {
+                  "createdAt": "2017-01-05T08:33:12.431Z",
+                  "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                  "fromDate": "2016-12-29T08:43:52.000Z",
+                  "id": "f65b51cd-93fd-4150-90d3-ad6b4f6c0f22",
+                  "teeupId": "f003bfba-acf7-4c60-a99a-c476dce0a124",
+                  "thumbsDownCount": 0,
+                  "thumbsUp": [
+                    "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+                  ],
+                  "thumbsUpCount": 1,
+                  "toDate": "2016-12-29T09:34:07.000Z"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "Teeup not found.",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "Let's the user create a when suggestion\nthe params in the body is milliseconds",
+        "summary": "Create a When Suggestion"
+      }
+    },
+    "/api/when/{when_id}": {
+      "delete": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "message": "Successfully retrieved when suggestion",
+                "status": 200,
+                "when": {
+                  "createdAt": "2017-01-05T08:33:12.431Z",
+                  "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                  "fromDate": "2016-12-29T08:43:52.000Z",
+                  "id": "f65b51cd-93fd-4150-90d3-ad6b4f6c0f22",
+                  "teeupId": "f003bfba-acf7-4c60-a99a-c476dce0a124",
+                  "thumbsDownCount": 0,
+                  "thumbsUp": [
+                    "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+                  ],
+                  "thumbsUpCount": 1,
+                  "toDate": "2016-12-29T09:34:07.000Z"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "Unauthorized.",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "Deletes a when suggestion and the details about it",
+        "summary": "delete when suggestion"
+      },
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "message": "Successfully retrieved when suggestion",
+                "status": 200,
+                "when": {
+                  "createdAt": "2017-01-05T08:33:12.431Z",
+                  "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                  "fromDate": "2016-12-29T08:43:52.000Z",
+                  "id": "f65b51cd-93fd-4150-90d3-ad6b4f6c0f22",
+                  "teeupId": "f003bfba-acf7-4c60-a99a-c476dce0a124",
+                  "thumbsDownCount": 0,
+                  "thumbsUp": [
+                    "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+                  ],
+                  "thumbsUpCount": 1,
+                  "toDate": "2016-12-29T09:34:07.000Z"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "Unauthorized.",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "Gets a when suggestion and the details about it",
+        "summary": "Get when suggestion"
+      }
+    },
+    "/api/when/{when_id}/dislike": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "message": "Successfully disliked!",
+                "status": 200,
+                "when": {
+                  "createdAt": "2017-01-05T08:33:12.431Z",
+                  "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                  "fromDate": "2016-12-29T08:43:52.000Z",
+                  "id": "f65b51cd-93fd-4150-90d3-ad6b4f6c0f22",
+                  "teeupId": "f003bfba-acf7-4c60-a99a-c476dce0a124",
+                  "thumbsDown": [
+                    "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+                  ],
+                  "thumbsDownCount": 1,
+                  "thumbsUp": [],
+                  "thumbsUpCount": 0,
+                  "toDate": "2016-12-29T09:34:07.000Z"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "Unauthorized.",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Dislike a when suggestion"
+      }
+    },
+    "/api/when/{when_id}/like": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "message": "Successfully liked!",
+                "status": 200,
+                "when": {
+                  "createdAt": "2017-01-05T08:33:12.431Z",
+                  "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                  "fromDate": "2016-12-29T08:43:52.000Z",
+                  "id": "f65b51cd-93fd-4150-90d3-ad6b4f6c0f22",
+                  "teeupId": "f003bfba-acf7-4c60-a99a-c476dce0a124",
+                  "thumbsDown": [],
+                  "thumbsDownCount": 0,
+                  "thumbsUp": [
+                    "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+                  ],
+                  "thumbsUpCount": 1,
+                  "toDate": "2016-12-29T09:34:07.000Z"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "Unauthorized.",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Like a when suggestion"
+      }
+    },
+    "/api/when/{when_id}/makeGamePlan": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "message": "Successfully updated gameplan",
+                "status": 200,
+                "when": {
+                  "createdAt": "2017-01-05T08:33:12.431Z",
+                  "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                  "fromDate": "2016-12-29T08:43:52.000Z",
+                  "id": "f65b51cd-93fd-4150-90d3-ad6b4f6c0f22",
+                  "teeupId": "f003bfba-acf7-4c60-a99a-c476dce0a124",
+                  "thumbsDown": [
+                    "a47537c7-958c-424c-81bb-d1d0612c0f9e"
+                  ],
+                  "thumbsDownCount": 1,
+                  "thumbsUp": [],
+                  "thumbsUpCount": 0,
+                  "toDate": "2016-12-29T09:34:07.000Z"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "examples": {
+              "application/json": {
+                "message": "Unauthorized.",
+                "status": 400
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "examples": {
+              "application/json": {
+                "message": "Must be logged in.",
+                "status": 401
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Make when the gamplan"
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "message": "Signed in succesfully!",
+                "status": true,
+                "user": {
+                  "createdAt": "2017-01-01T05:38:44.792Z",
+                  "email": {
+                    "createdAt": "2017-01-01T05:38:44.832Z",
+                    "createdBy": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                    "id": "deep7176@gmail.com",
+                    "isValidated": false,
+                    "userId": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                    "validationCode": 7284881965043779
+                  },
+                  "firstName": "Deep",
+                  "id": "a47537c7-958c-424c-81bb-d1d0612c0f9e",
+                  "lastName": "Patel",
+                  "privacy": {
+                    "Bio": 0,
+                    "Dob": 0,
+                    "campusOrganizations": 0,
+                    "gender": 0,
+                    "hometown": 0,
+                    "majors": 0,
+                    "nationality": 0,
+                    "nativeLanguage": 0,
+                    "school": 0,
+                    "studentType": 0
+                  },
+                  "profile": {},
+                  "settings": {
+                    "loginMethod": 0,
+                    "notifications": true
+                  },
+                  "username": "deeperthanyou"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Login User"
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "message": "User logged out successfully",
+                "status": 200
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Logout User"
+      }
+    },
+    "/auth/resetPassword/byEmail/{email}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "info": {
+                  "accepted": [
+                    "asp225@njit.edu"
+                  ],
+                  "envelope": {
+                    "from": "donotreply@cooe.com",
+                    "to": [
+                      "asp225@njit.edu"
+                    ]
+                  },
+                  "messageId": "fdf37afe-50c6-1d42-5feb-31c428870d35@cooe.com",
+                  "rejected": [],
+                  "response": "250 2.0.0 OK 1486686662 v187sm10672341qkd.20 - gsmtp"
+                },
+                "message": "Sent successfully",
+                "status": 200
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Send forgot password email"
+      }
+    },
+    "/auth/setNewPassword/{email}/{reset_code}": {
+      "post": {
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {},
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Send the new pass"
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "examples": {},
+            "headers": {}
+          },
+          "202": {
+            "description": "Accepted",
+            "examples": {
+              "application/json": {
+                "message": "User with that email Already Exists.",
+                "status": 202
+              }
+            },
+            "headers": {}
+          }
+        },
+        "tags": [],
+        "description": "",
+        "summary": "Signup User"
+      }
+    }
+  },
+  "definitions": {
+    "Change Teeup settings": {},
+    "Change Teeup status": {},
+    "Change User status": {},
+    "Chat messages": {},
+    "Decide a when": {},
+    "Dislike a when suggestion": {},
+    "Forgot Password": {},
+    "Get a when suggestion": {},
+    "Get the gameplan of a teeup": {},
+    "Get the image data of an image by id": {},
+    "Invite users to teeup": {},
+    "Like a when suggestion": {},
+    "List the user's image files": {},
+    "Login": {},
+    "Logout": {},
+    "Make gameplan when": {},
+    "Past Teeups": {},
+    "Register Firebase Push Token": {},
+    "Set new password": {},
+    "Signup": {},
+    "Specific Teeup": {},
+    "Teeup Auto Change Happening if when is reached": {},
+    "Teeup Auto Change Its On Minimum Value": {},
+    "Teeup Auto Change Require It's On Be Set First": {},
+    "Teeup Auto Change Require When Be Decided": {},
+    "Teeup Invites": {},
+    "Teeup when suggestions": {},
+    "Teeups": {},
+    "TellUsWho Sense of Community": {},
+    "TellUsWho Sociability": {},
+    "TellUsWho Wellbeing": {},
+    "Undecide a when": {},
+    "Unregister Firebase Push Token": {},
+    "Upload bulk contacts": {},
+    "Upload image": {},
+    "Upload image file": {},
+    "User image file": {},
+    "When suggestions for a Teeup": {}
+  }
+}

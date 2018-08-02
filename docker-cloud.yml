@@ -1,0 +1,17 @@
+web:
+  image: username/web-api
+  links:
+    - redis
+    - rethink
+  target_num_containers: 2
+  tags:
+    - latest
+    - staging
+redis:
+  image: redis
+  ports:
+    - "6379:6379"
+rethink:
+  image: rethinkdb
+  ports:
+    - "8080:8080"
